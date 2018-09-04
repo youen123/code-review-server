@@ -23,8 +23,8 @@ module.exports = {
       sql += ` AND ${key} = ?`
       vals.push(where[key])
     }
-    console.log(sql)
-    console.log(vals)
+    // console.log(sql)
+    // console.log(vals)
     return exec(sql, vals).then((res) => {
       return res;
     })
@@ -61,8 +61,8 @@ module.exports = {
       vals.push(where[key])
     }
     sql = sql.substr(0, sql.length - 4)
-    console.log(sql)
-    console.log(vals)
+    // console.log(sql)
+    // console.log(vals)
     return exec(sql, vals).then((res) => {
       return res.affectedRows
     }, (err) => {

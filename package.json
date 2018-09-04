@@ -14,10 +14,13 @@
   "license": "ISC",
   "dependencies": {
     "co-mysql": "^1.0.0",
+    "cookies": "^0.7.1",
     "diff2html": "^2.3.3",
     "koa": "^2.5.1",
     "koa-bodyparser": "^4.2.1",
+    "koa-logger": "^3.2.0",
     "koa-route": "^3.2.0",
+    "koa-session": "^5.8.2",
     "mysql": "^2.15.0"
   }
 }

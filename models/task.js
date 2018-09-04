@@ -43,12 +43,32 @@ module.exports = {
     }
   },
   // 查询任务基本信息
-  getTaskBaseInfoById: (id) => {
-
+  getTaskBaseInfoById: async (id) => {
+    var res = await DB.select('task',{id: id});
+    if (res.length) {
+      return {
+        flag: true,
+        res: res[0]
+      }
+    } else {
+      return {
+        flag: false
+      }
+    }
   },
   // 修改任务
-  setTask: ({id, status, commits}) => {
-
+  setTask: async ({id}, {status}) => {
+    var res = await DB.update('task', {status}, {id});
+    if (res) {
+      return {
+        flag: true,
+        res: res
+      }
+    } else {
+      return {
+        flag: false
+      }
+    }
   },
   // 查询任务
   getLists: ({creator, reviewer}) => {

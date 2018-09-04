@@ -17,4 +17,4 @@ let t2 = async () => {
     console.log(res);
     return res;
 } 
-t1();
+t2();

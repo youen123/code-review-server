@@ -4,8 +4,9 @@ module.exports = {
   newUser({name, password}) {
 
   },
-  isValidUser({name, password}) {
-    let rows = DB.select('User', {name, password})
+  async isValidUser({name, password}) {
+    let rows = await DB.select('User', {name, password})
+    console.log(rows);
     if (rows === false || rows.length === 0) {
       return false
     }
