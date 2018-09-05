@@ -4,6 +4,7 @@ const _ = require('koa-route');
 const bodyParser = require('koa-bodyparser')
 const task = require('./controllers/task')
 const user = require('./controllers/user')
+const diff = require('./controllers/diff')
 const session=require('koa-session');
 const logger = require('koa-logger')
 
@@ -46,7 +47,8 @@ app.use(_.get('/task/getTaskDetail', task.getTaskDetail));
 app.use(_.post('/task/closeTask', task.closeTask))
 app.use(_.post('/user/login', user.login))
 app.use(_.post('/user/logout', user.logout))
-
+app.use(_.get('/diff/getDiffFileListOfSameBranch', diff.getDiffFileListOfSameBranch));
+app.use(_.get('/diff/getDiffFileHTML', diff.getDiffFileHTML));
 
 app.use(session({
   key: 'koa:sess', /** cookie的名称，可以不管 */

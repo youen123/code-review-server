@@ -108,7 +108,8 @@ let isValid = async (remoteRepo) => {
 module.exports = {
   newRepo,
   updateRepo,
-  isValid
+  isValid,
+  getLocalRepo
 }
 
 

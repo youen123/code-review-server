@@ -31,8 +31,8 @@ module.exports = {
       })
     })
   },
-  get2CommitDiffFileList(repo, hash1, hash2) {
-    let cmd = `cd ${repo} && git diff ${hash1} ${hash2} --stat`
+  get2CommitDiffFileList(repo, branch, hash1, hash2) {
+    let cmd = `cd ${repo} && git checkout ${branch} && git diff ${hash1} ${hash2} --stat`
     console.log(cmd)
     return new Promise((resolve, reject) => {
       exec(cmd, (err, stdout, stderr) => {
