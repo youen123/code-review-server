@@ -1,4 +1,6 @@
 const Task = require('../models/task.js')
+const Repo = require('../models/repo.js')
+const Commit = require('../models/commit.js')
 
 module.exports = {
   newTask: async (ctx) => {
@@ -16,6 +18,8 @@ module.exports = {
   getTaskDetail: async ctx => {
     let { id } = ctx.request.query;
     const ret = await Task.getTaskBaseInfoById(id);
+    const localRepo = await Repo.getLocalRepo(ret.res.repo);
+    ret.res.commits = await Commit.getBranchCommits(localRepo, ret.res.sourceBranch);
     ctx.response.body = ret.flag ? { flag: true, data: ret.res , msg: '成功'} : ret 
   },
   closeTask: async ctx => {
