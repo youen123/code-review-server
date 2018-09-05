@@ -3,15 +3,15 @@ const Repo = require('./repo.js')
 
 module.exports = {
   // 新建任务
-  newTask: async ({title, repository, sourceBranch, destBranch, type, date, desc, reviewers, creator, startCommit}) => {
-    const isRepoValid = await Repo.isValid(repository)
+  newTask: async ({title, description, repo, sourceBranch, destBranch, type, createTime, startCommit, creator, reviewers}) => {
+    const isRepoValid = await Repo.isValid(repo)
     if (!isRepoValid) {
       return {
         flag: false,
         errmsg: '暂无此仓库的权限'
       }
     }
-    const ret = await DB.insert('Task', {title, description: desc, repo: repository, sourceBranch, destBranch, type, createTime: date, startCommit})
+    const ret = await DB.insert('Task', {title, description, repo, sourceBranch, destBranch, type, createTime, startCommit})
     // console.log(ret)
     if (ret === false) {
       return {
@@ -22,7 +22,7 @@ module.exports = {
     for (let reviewer of reviewers) {
       DB.insert('Task_User', { task_id: ret, creator_id: creator, reviewer_id: reviewer})
     }
-    Repo.newRepo(repository)
+    Repo.newRepo(repo)
     return {
       flag: true,
       id: ret

@@ -3,9 +3,9 @@ const Task = require('../models/task.js')
 module.exports = {
   newTask: async (ctx) => {
     ctx.response.type = 'json'
-    let { title, repository, sourceBranch, destBranch, type, date, reviewers, desc, startCommit } = ctx.request.body
+    let {title, description, repo, sourceBranch, destBranch, type, date1, date2, startCommit, reviewers} = ctx.request.body
     let creator = 1
-    const ret = await Task.newTask({ title, repository, sourceBranch, destBranch, type, date, reviewers, desc, creator, startCommit })
+    const ret = await Task.newTask({title, description, repo, sourceBranch, destBranch, type, createTime: date2, startCommit, creator, reviewers})
     ctx.response.body = ret.flag ? { flag: true, data: ret.id , msg: '成功'} : ret
   },
   getTaskList: async (ctx) => {
