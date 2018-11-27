@@ -53,3 +53,11 @@ create Table Log(
 
 insert into Repo (repo, local) values ('git@github.com:youen123/vue-tool.git', 'vue-tool');
 insert into Log (operator, operation, operation_time) values ('admin', '创建', '2018-6-6 12:12:12');
+
+create Table Comment(
+  creator varchar(255),
+  create_time timestamp,
+  task_id int,
+  content varchar(255),
+  type int default 0
+)
