@@ -1,6 +1,7 @@
-const exec = require('child_process').exec
+// const exec = require('child_process').exec
 
 let diff2html = require("diff2html").Diff2Html
+let {exec} = require('../util/util')
 
 let parseFileDiff = (stdout) => {
   let arr = stdout.split('\n')
@@ -15,68 +16,103 @@ let parseFileDiff = (stdout) => {
   return arr;
 }
 module.exports = {
-  get2BranchDiffFileList(repo, branch1, branch2) {
+  get2BranchDiffFileList: async (repo, branch1, branch2) => {
     let cmd = `cd ${repo} && git diff ${branch1} ${branch2} --stat`
     console.log(cmd)
-    return new Promise((resolve, reject) => {
-      exec(cmd, (err, stdout, stderr) => {
-        if(err) {
-          console.log('error:' + stderr);
-          reject(stderr)
-        } else {
-          console.log('ok!' + stdout)
-          let arr = parseFileDiff(stdout);
-          resolve(arr);
-        }
-      })
-    })
+    try {
+      let ret = await exec(cmd);
+      return {
+        flag: true,
+        res: parseFileDiff(ret)
+      }
+    } catch(err) {
+      return {
+        flag: false,
+        errmsg: err.message ||'failed'
+      }
+    }   
   },
-  get2CommitDiffFileList(repo, branch, hash1, hash2) {
-    let cmd = `cd ${repo} && git checkout ${branch} && git diff ${hash1} ${hash2} --stat`
-    console.log(cmd)
-    return new Promise((resolve, reject) => {
-      exec(cmd, (err, stdout, stderr) => {
-        if(err) {
-          console.log('error:' + stderr);
-          reject(stderr)
-        } else {
-          console.log('ok!' + stdout)
-          let arr = parseFileDiff(stdout);
-          resolve(arr);
-        }
-      })
-    })    
+  get2CommitDiffFileList: async(repo, branch, hash1, hash2) => {
+    try {
+      let ret = await exec(`cd ${repo} && git checkout ${branch}`);
+      ret = await exec(`cd ${repo} && git diff ${hash1} ${hash2} --stat`);
+      return {
+        flag: true,
+        res: parseFileDiff(ret)
+      }
+    } catch(err) {
+      return {
+        flag: false,
+        errmsg: err.message ||'failed'
+      }
+    }   
   },
 
-  get2BranchDiffFile(repo, branch1, branch2, file) {
+  get2BranchDiffFile: async(repo, branch1, branch2, file) => {
     let cmd = `cd ${repo} && git diff ${branch1} ${branch2} ${file}`
     console.log(cmd)
-    return new Promise((resolve, reject) => {
-      exec(cmd, (err, stdout, stderr) => {
-        if(err) {
-          console.log('error:' + stderr);
-          reject(stderr)
-        } else {
-          let outhtml = diff2html.getPrettyHtml(stdout)
-          resolve(outhtml)
-        }
-      })
-    })
+    try {
+      let ret = await exec(cmd);
+      return {
+        flag: true,
+        res: diff2html.getPrettyHtml(ret)
+      }
+    } catch(err) {
+      return {
+        flag: false,
+        errmsg: err.message ||'failed'
+      }
+    }
   },
 
-  get2CommitDiffFile(repo, hash1, hash2, file) {
+  get2BranchDiffJSON: async(repo, branch1, branch2, file) => {
+    let cmd = `cd ${repo} && git diff ${branch1} ${branch2} ${file}`
+    console.log(cmd)
+    try {
+      let ret = await exec(cmd);
+      return {
+        flag: true,
+        res: diff2html.getJsonFromDiff(ret)
+      }
+    } catch(err) {
+      return {
+        flag: false,
+        errmsg: err.message ||'failed'
+      }
+    } 
+  },
+
+  get2CommitDiffFile: async(repo, hash1, hash2, file) => {
     let cmd = `cd ${repo} && git diff ${hash1} ${hash2} ${file}`
     console.log(cmd)
-    return new Promise((resolve, reject) => {
-      exec(cmd, (err, stdout, stderr) => {
-        if(err) {
-          console.log('error:' + stderr);
-          reject(stderr)
-        } else {
-          let outhtml = diff2html.getPrettyHtml(stdout)
-          resolve(outhtml)
-        }
-      })
-    })
+    try {
+      let ret = await exec(cmd);
+      return {
+        flag: true,
+        res: diff2html.getPrettyHtml(ret)
+      }
+    } catch(err) {
+      return {
+        flag: false,
+        errmsg: err.message ||'failed'
+      }
+    }
+  },
+
+  get2CommitDiffJSON: async(repo, hash1, hash2, file) => {
+    let cmd = `cd ${repo} && git diff ${hash1} ${hash2} ${file}`
+    console.log(cmd)
+    try {
+      let ret = await exec(cmd);
+      return {
+        flag: true,
+        res: diff2html.getJsonFromDiff(ret)
+      }
+    } catch(err) {
+      return {
+        flag: false,
+        errmsg: err.message ||'failed'
+      }
+    } 
   }
 }
