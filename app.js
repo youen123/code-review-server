@@ -49,6 +49,7 @@ app.use(_.post('/user/login', user.login))
 app.use(_.post('/user/logout', user.logout))
 app.use(_.get('/diff/getDiffFileListOfSameBranch', diff.getDiffFileListOfSameBranch));
 app.use(_.get('/diff/getDiffFileHTML', diff.getDiffFileHTML));
+app.use(_.get('/diff/getDiffFileJson', diff.getDiffFileJson));
 app.use(_.post('/task/addComment', task.addComment));
 app.use(_.get('/task/getComments', task.getCommentsOfTask));
 
