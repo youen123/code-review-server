@@ -21,7 +21,12 @@ module.exports = {
     let { id } = ctx.request.query
     const ret = await Task.getTaskBaseInfoById(id)
     const localRepo = await Repo.getLocalRepo(ret.res.repo)
-    ret.res.commits = await Commit.getBranchCommits(localRepo, ret.res.sourceBranch)
+    const commits = await Commit.getBranchCommits(localRepo, ret.res.sourceBranch)
+    if (commits.flag) {
+      ret.res.commits = commits.res;
+    } else {
+      ret.res.commits = [];
+    }
     ctx.response.body = ret.flag ? { flag: true, data: ret.res , msg: '成功'} : ret 
   },
   closeTask: async ctx => {
